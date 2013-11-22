@@ -12,6 +12,7 @@ plan.save
 need = Need.new
 need.description = "Allergy shots"
 need.frequency = 12
+need.cost = 80
 care.needs << need
 need.save
 
