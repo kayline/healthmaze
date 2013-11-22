@@ -1,0 +1,21 @@
+<h2>Your Health Care Needs</h2>
+
+<%= form_for @need  do |f| %>
+<%= f.label :description %>
+<%= f.text_field :description %>
+
+<%= f.label :frequency, "How many times per year?" %>
+<%= f.number_field :frequency %>
+
+<%= f.label :care_id, "What kind of care is this?" %>
+<%= f.select :care_id, options_from_collection_for_select(@cares, :id, :description) %>
+
+<br/>
+<%= f.button "Add Another Item", {:class => 'add_need', :type => 'button'} %>
+
+<br/><br/>
+<%= f.submit "Submit Needs" %>
+<% end %>
+
+<%= link_to("Go Back", '/options') %>
+<%= link_to("Forward", '/plans') %>
