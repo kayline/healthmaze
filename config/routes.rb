@@ -1,5 +1,5 @@
 Healthmaze::Application.routes.draw do
-
+  
   get 'home' => 'maze#home'
   get 'options' => 'maze#get_options'
   patch 'options' => 'maze#set_options'
@@ -10,8 +10,6 @@ Healthmaze::Application.routes.draw do
   get 'plans/compare' => 'plans#compare'
 
   root 'maze#home'
-
-
 
   # Example resource route within a namespace:
   #   namespace :admin do
