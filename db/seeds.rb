@@ -18,12 +18,22 @@ need.cost = 80
 care.needs << need
 need.save
 
-cc = CaresPlans.new
+cc = CaresPlan.new
 cc.cover_percent = 25
 cc.covered = true
 cc.plan = plan
 cc.care = care
 cc.save
+
+user = User.new
+user.name = "Default User"
+user.save
+
+plan_outcome = PlansUser.new
+plan_outcome.user = user
+plan_outcome.plan = plan
+plan_outcome.save
+
 
 
 
