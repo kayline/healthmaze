@@ -3,31 +3,54 @@ class PlansUser < ActiveRecord::Base
 	belongs_to :plan
 
 	def calc_total_cost
-		@needs = self.user.needs
-		@plan = self.plan
-		@needs.each do |n|
-			puts "*****I'm processing some need costs**********"
-			coverage_info = CaresPlan.where(:plan => @plan, :care => n.care).first
-			annual_need_cost = n.cost * n.frequency
-			if self.care_costs + annual_need_cost <= @plan.deductible
-				net_need_cost = annual_need_cost
-			elsif self.care_costs <= @plan.deductible
-				uncovered_need_cost = [@plan.deductible-self.care_costs,0].max
-				puts "$$$$The uncovered need cost is #{uncovered_need_cost}$$$$$$$"
-				covered_amount = (annual_need_cost - uncovered_need_cost) * (coverage_info.cover_percent/100.0)
-				puts "The covered amount is #{covered_amount}"
-				net_need_cost = annual_need_cost - covered_amount
-				puts "The net need cost is #{net_need_cost}"
-			elsif self.care_costs + annual_need_cost <= @plan.annual_limit
-				net_need_cost = annual_need_cost * (1-coverage_info.cover_percent)
-			else
-				net_need_cost = [@plan.annual_limit - self.care_costs, 0].max
-			end
-			self.care_costs += net_need_cost
+		needs = self.user.needs
+		needs.each do |need|
+			self.calc_need_cost(need)
 		end
-		self.total_cost = self.care_costs + @plan.cost * 12
+		self.total_cost = self.care_costs + self.plan.annual_cost
 		self.save
-		return self.total_cost
+	end
+
+	def calc_need_cost(need)
+		coverage_info = CaresPlan.where(:plan => self.plan, :care => need.care).first
+		annual_need_cost = need.cost * need.frequency
+		if self.under_deductible?
+			if self.under_deductible_tipping_point?(annual_need_cost)
+				net_need_cost = annual_need_cost
+			else
+				covered_amount = (annual_need_cost - self.deductible_remaining) * coverage_info.coverage_multiplier
+				net_need_cost = annual_need_cost - covered_amount
+			end
+		elsif self.under_annual_limit?
+			if self.under_limit_tipping_point?(annual_need_cost)
+				net_need_cost = annual_need_cost * coverage_info.payment_multiplier
+			else
+				net_need_cost = [self.plan.annual_limit - self.care_costs, 0].max
+			end
+		else
+			net_need_cost += 0
+		end
+		self.care_costs += net_need_cost
+	end
+
+	def deductible_remaining
+		[self.plan.deductible - self.care_costs, 0].max
+	end
+
+	def under_deductible?
+		self.deductible_remaining > 0
+	end
+
+	def under_deductible_tipping_point?(new_cost)
+		self.deductible_remaining > new_cost
+	end
+
+	def under_annual_limit?
+		self.care_costs <= self.plan.annual_limit
+	end
+
+	def under_limit_tipping_point(new_cost)
+		self.care_costs + annual_need_cost <= self.plan.annual_limit
 	end
 
 end
