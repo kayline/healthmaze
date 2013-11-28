@@ -1,23 +1,35 @@
 <h2>Your Health Care Needs</h2>
 
+<% if @errors %>
+	<div class='errors'>
+		<h3>Please correct the following errors</h3>
+		<ul>
+		<% @errors.each do |e| %>
+			<li><%= e %></li>
+		<% end %>
+		</ul>
+	</div>
+<% end %>
+
 <%= form_for @need  do |f| %>
-<%= f.label :description %>
-<%= f.text_field :description %>
 
-<%= f.label :cost, "How much does it cost each time?" %>
-<%= f.text_field :cost %>
+	<%= f.label :description %>
+	<%= f.text_field :description %>
 
-<%= f.label :frequency, "How many times per year?" %>
-<%= f.number_field :frequency %>
+	<%= f.label :cost, "How much does it cost each time?" %>
+	<%= f.text_field :cost %>
 
-<%= f.label :care_id, "What kind of care is this?" %>
-<%= f.select :care_id, options_from_collection_for_select(@cares, :id, :description) %>
+	<%= f.label :frequency, "How many times per year?" %>
+	<%= f.number_field :frequency %>
 
-<br/>
-<%= f.button "Add Another Item", {:class => 'add_need', :type => 'button'} %>
+	<%= f.label :care_id, "What kind of care is this?" %>
+	<%= f.select :care_id, options_from_collection_for_select(@cares, :id, :description) %>
 
-<br/><br/>
-<%= f.submit "Submit Needs" %>
+	<br/>
+	<%= f.button "Add Another Item", {:class => 'add_need', :type => 'button'} %>
+
+	<br/><br/>
+	<%= f.submit "Submit Needs" %>
 <% end %>
 
 <%= link_to("Go Back", '/options') %>

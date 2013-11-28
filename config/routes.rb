@@ -4,7 +4,7 @@ Healthmaze::Application.routes.draw do
   get 'options' => 'maze#get_options'
   patch 'options' => 'maze#set_options'
   get 'needs' => 'maze#get_needs'
-  patch 'needs' => 'maze#set_needs'
+  post 'needs' => 'maze#set_needs'
   get 'plans' => 'plans#index'
   get 'plans/:id' => 'plans#show'
   get 'plans/compare' => 'plans#compare'
