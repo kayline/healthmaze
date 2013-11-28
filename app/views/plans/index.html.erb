@@ -1,0 +1,13 @@
+<h2>Hi I am the Plans index page</h2>
+
+<h3>Your Plan Options and Estimated Costs</h3>
+<ul class='plans-list'>
+	<% @plan_results.each do |p| %>
+		<ul class='plan-details'>
+			<li><%= p.plan.title %></li>
+			<li><%= p.plan.provider %></li>
+			<li><%= p.care_costs %></li>
+			<li><%= p.total_cost %></li>
+		</ul>
+	<% end %>
+</ul>
