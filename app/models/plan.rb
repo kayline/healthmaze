@@ -5,5 +5,5 @@ class Plan < ActiveRecord::Base
 	def annual_cost
 		self.cost * 12
 	end
-
+	
 end
