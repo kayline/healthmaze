@@ -6,7 +6,7 @@ class Usermodel < ActiveRecord::Migration
   	end
 
   	create_table :plans_users do |t|
-  		t.decimal :total_cost
+		t.decimal :total_cost, :default => 0
   		t.references :user, :plan
   	end
   end

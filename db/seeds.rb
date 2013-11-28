@@ -7,6 +7,8 @@ plan.title = "Crappy PPO"
 plan.provider = "Blue Sabotage"
 plan.category = "PPO"
 plan.cost = 153
+plan.deductible = 2000
+plan.annual_limit = 20000
 plan.save
 
 need = Need.new
