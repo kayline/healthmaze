@@ -1,13 +1,17 @@
 <h2>Hi I am the Plans index page</h2>
 
 <h3>Your Plan Options and Estimated Costs</h3>
-<ul class='plans-list'>
+<table class='plans-list'>
+	<th>Plan Name</th>
+	<th>Provider</th>
+	<th>Cost of Care</th>
+	<th>Total Annual Cost</th>
 	<% @plan_results.each do |p| %>
-		<ul class='plan-details'>
-			<li><%= p.plan.title %></li>
-			<li><%= p.plan.provider %></li>
-			<li><%= p.care_costs %></li>
-			<li><%= p.total_cost %></li>
-		</ul>
+		<tr class='plan-details'>
+			<td><%= p.plan.title %></td>
+			<td><%= p.plan.provider %></td>
+			<td><%= p.care_costs %></td>
+			<td><%= p.total_cost %></td>
+		</tr>
 	<% end %>
-</ul>
+</table>
